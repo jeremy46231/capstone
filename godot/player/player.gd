@@ -1,18 +1,21 @@
+class_name Player
 extends CharacterBody2D
 
-@onready var anim: AnimatedSprite2D = $/AnimatedSprite2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-const SCALE_FACTOR = 0.5
+const SPEED := 300.0
+const JUMP_VELOCITY := -400.0
+const SCALE_FACTOR := 0.5
 
-var isSmol = false;
+var is_smol := false;
 
 @export var jump_action: StringName = "p1_jump"
 @export var left_action: StringName = "p1_left"
 @export var right_action: StringName = "p1_right"
 @export var smol_action: StringName = "p1_smol"
+@export var teleport_action: StringName = "p1_teleport"
+@export var other_player: Player;
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -24,7 +27,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		
 	if Input.is_action_just_pressed(smol_action):
-			isSmol = !isSmol;
+			is_smol = !is_smol;
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis(left_action, right_action)
@@ -34,9 +37,14 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
 	# Handle shrinking
-	if isSmol and scale.x == 1:
+	if is_smol and scale.x == 1:
 		scale = Vector2(SCALE_FACTOR, SCALE_FACTOR)
-	elif !isSmol and scale.x != 1:
+	elif !is_smol and scale.x != 1:
 		scale = Vector2(1, 1)
+	
+	# Handle teleporting
+	if Input.is_action_just_pressed(teleport_action) and anim.animation == "default":
+		other_player.queue_free()
+		anim.play("stacked")
 	
 	move_and_slide()
