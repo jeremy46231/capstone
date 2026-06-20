@@ -34,7 +34,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_rkbax")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"default",
 "speed": 5.0
 }, {

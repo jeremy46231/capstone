@@ -1,35 +1,39 @@
+class_name Player
 extends CharacterBody2D
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+
+
+const SPEED := 300.0
+const JUMP_VELOCITY := -400.0
+const SCALE_FACTOR := 0.5
+
+var is_smol := false;
 
 # keybinds
 @export var jump_action: StringName = "p1_jump"
 @export var left_action: StringName = "p1_left"
 @export var right_action: StringName = "p1_right"
 @export var smol_action: StringName = "p1_smol"
+@export var teleport_action: StringName = "p1_teleport"
+@export var other_player: Player;
 
 # movement vars
 # horizontal
-@export var speed: float = 300.0
-@export var acceleration: float = 2000.0
-@export var friction: float = 2400.0
-@export var air_acceleration: float = 1200.0
-@export var air_friction: float = 400.0
-# jump
-@export var jump_velocity: float = -400.0
+const acceleration := 2000.0
+const friction := 2400.0
+const air_acceleration := 1200.0
+const air_friction := 400.0
 # gravity
-@export var rise_gravity_scale: float = 1.0
-@export var fall_gravity_scale: float = 1.6
-@export var max_fall_speed: float = 1000.0
+const rise_gravity_scale := 1.0
+const fall_gravity_scale := 1.6
+const max_fall_speed := 1000.0
 # short tap -> short hop
 # if you let go when going up, kinda like stop going up as much
-@export_range(0.0, 1.0) var jump_cut_factor: float = 0.4
+const jump_cut_factor := 0.4
 # coyote time! :D (and other buffer time)
-@export var coyote_time: float = 0.1
-@export var jump_buffer_time: float = 0.1
-# shrink toggle
-const SCALE_FACTOR = 0.5
-
+const coyote_time := 0.1
+const jump_buffer_time := 0.1
 # timers
 var _coyote_timer: float = 0.0
 var _buffer_timer: float = 0.0
@@ -52,7 +56,7 @@ func _physics_process(delta: float) -> void:
 
 	# jump (if buffered jump, allow coyote too)
 	if _buffer_timer > 0.0 and _coyote_timer > 0.0:
-		velocity.y = jump_velocity
+		velocity.y = JUMP_VELOCITY
 		_buffer_timer = 0.0
 		_coyote_timer = 0.0
 
@@ -72,12 +76,17 @@ func _physics_process(delta: float) -> void:
 	if direction != 0.0:
 		# horizontal move pressed
 		var accel := acceleration if on_floor else air_acceleration
-		velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
+		velocity.x = move_toward(velocity.x, direction * SPEED, accel * delta)
 		anim.flip_h = direction < 0.0
 	else:
 		# not pressing move, slow down
 		var fric := friction if on_floor else air_friction
 		velocity.x = move_toward(velocity.x, 0.0, fric * delta)
+
+	# Handle teleporting
+	if Input.is_action_just_pressed(teleport_action) and anim.animation == "default":
+		other_player.queue_free()
+		anim.play("stacked")
 
 	# magic godot function waow godot is so cool
 	move_and_slide()
