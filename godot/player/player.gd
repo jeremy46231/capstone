@@ -106,6 +106,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(teleport_action):
 		pass
 
+	_set_anim()
+
 	# magic godot function waow godot is so cool
 	move_and_slide()
 
@@ -184,3 +186,31 @@ func _stick_to(carrier: Player) -> void:
 		move_and_collide(Vector2(carrier_dx, 0.0))
 
 	velocity.y = carrier.velocity.y
+
+func _set_anim() -> void:
+
+	if velocity.y == 0:
+		if velocity.x == 0:
+			anim.play("idle")
+		if velocity.x > 0:
+			anim.play("right")
+		if velocity.x < 0:
+			anim.play("left")
+
+	# down
+	if velocity.y > 0:
+		if velocity.x == 0:
+			anim.play("down")
+		if velocity.x > 0:
+			anim.play("right_down")
+		if velocity.x < 0:
+			anim.play("left_down")
+
+	# up
+	if velocity.y < 0:
+		if velocity.x == 0:
+			anim.play("up")
+		if velocity.x > 0:
+			anim.play("right_up")
+		if velocity.x < 0:
+			anim.play("left_up")

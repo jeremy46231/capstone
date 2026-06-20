@@ -4,6 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://tkvnfumv8rsh" path="res://player/assets/squareSprite.png" id="2_rkbax"]
 [ext_resource type="Texture2D" uid="uid://06c6muw4g5xb" path="res://player/assets/playerSprite.png" id="3_g1dw6"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1dw6"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(16, 32, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
 atlas = ExtResource("3_g1dw6")
 region = Rect2(16, 16, 16, 16)
@@ -12,6 +16,10 @@ region = Rect2(16, 16, 16, 16)
 atlas = ExtResource("3_g1dw6")
 region = Rect2(0, 16, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8t03j"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(0, 32, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_g6k8r"]
 atlas = ExtResource("3_g1dw6")
 region = Rect2(0, 0, 16, 16)
@@ -19,6 +27,10 @@ region = Rect2(0, 0, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_boad6"]
 atlas = ExtResource("3_g1dw6")
 region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ieo8"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(32, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rgyib"]
 atlas = ExtResource("3_g1dw6")
@@ -40,6 +52,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_g1dw6")
+}],
+"loop": 1,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_yw30f")
 }],
 "loop": 1,
@@ -56,6 +76,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_8t03j")
+}],
+"loop": 1,
+"name": &"left_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_g6k8r")
 }],
 "loop": 1,
@@ -68,6 +96,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ieo8")
+}],
+"loop": 1,
+"name": &"right_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -92,12 +128,12 @@ size = Vector2(15.75, 15.75)
 
 [node name="Player" type="CharacterBody2D" unique_id=428086679]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_oul6g")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1793714119]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_lgort")
+animation = &"left"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1122835623]
 position = Vector2(0, 0.125)
