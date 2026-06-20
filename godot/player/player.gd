@@ -35,6 +35,8 @@ const jump_cut_factor: float = 0.4
 # coyote time! :D (and other buffer time)
 const coyote_time: float = 0.1
 const jump_buffer_time: float = 0.1
+# how far above the resting gap a rider can drift before it detaches
+const ride_gap_slack: float = 3.0
 
 # timers
 var _coyote_timer: float = 0.0
@@ -140,9 +142,11 @@ func _resolve_other() -> void:
 	# already riding: keep sticking until we slide off the side or the carrier
 	# rises above us (e.g. we got stopped by a ceiling)
 	if _riding:
+		var sep := _get_half_size() + _get_other_half_size()
 		var dx := absf(global_position.x - other_player._frame_start_pos.x)
-		var gap := other_player._frame_start_pos.y - global_position.y
-		if dx < (_get_half_size() + _get_other_half_size()).x and gap > 0.0 and gap < (_get_half_size() + _get_other_half_size()).y:
+
+		var gap := other_player._frame_start_pos.y - _frame_start_pos.y
+		if dx < sep.x and gap > 0.0 and gap < sep.y + ride_gap_slack:
 			# stick to them
 			_stick_to(other_player)
 		else:
