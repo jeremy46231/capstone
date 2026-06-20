@@ -12,18 +12,6 @@ region = Rect2(16, 32, 16, 16)
 atlas = ExtResource("3_g1dw6")
 region = Rect2(16, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qjkh3"]
-atlas = ExtResource("3_g1dw6")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8t03j"]
-atlas = ExtResource("3_g1dw6")
-region = Rect2(0, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g6k8r"]
-atlas = ExtResource("3_g1dw6")
-region = Rect2(0, 0, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_boad6"]
 atlas = ExtResource("3_g1dw6")
 region = Rect2(32, 16, 16, 16)
@@ -68,34 +56,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qjkh3")
-}],
-"loop": 1,
-"name": &"left",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8t03j")
-}],
-"loop": 1,
-"name": &"left_down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g6k8r")
-}],
-"loop": 1,
-"name": &"left_up",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_boad6")
 }],
 "loop": 1,
-"name": &"right",
+"name": &"move",
 "speed": 5.0
 }, {
 "frames": [{
@@ -103,7 +67,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_2ieo8")
 }],
 "loop": 1,
-"name": &"right_down",
+"name": &"move_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -111,7 +75,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_rgyib")
 }],
 "loop": 1,
-"name": &"right_up",
+"name": &"move_up",
 "speed": 5.0
 }, {
 "frames": [{
@@ -133,6 +97,7 @@ script = ExtResource("1_oul6g")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1793714119]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_lgort")
+animation = &"move_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1122835623]
 position = Vector2(0, 0.125)

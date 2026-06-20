@@ -293,30 +293,24 @@ func _stick_to(carrier: Player) -> void:
 
 func _set_anim() -> void:
 	if velocity.y == 0:
-		if velocity.x == 0:
+		if abs(velocity.x) == 0:
 			anim.play("idle")
-		if velocity.x > 0:
-			anim.play("right")
-		if velocity.x < 0:
-			anim.play("left")
+		if abs(velocity.x) > 0:
+			anim.play("move")
 
 	# down
 	if velocity.y > 0:
-		if velocity.x == 0:
+		if abs(velocity.x) == 0:
 			anim.play("down")
-		if velocity.x > 0:
-			anim.play("right_down")
-		if velocity.x < 0:
-			anim.play("left_down")
+		if abs(velocity.x) > 0:
+			anim.play("move_down")
 
 	# up
 	if velocity.y < 0:
-		if velocity.x == 0:
+		if abs(velocity.x) == 0:
 			anim.play("up")
-		if velocity.x > 0:
-			anim.play("right_up")
-		if velocity.x < 0:
-			anim.play("left_up")
+		if abs(velocity.x) > 0:
+			anim.play("move_up")
 
 	# the fused passenger mirrors our animation state
 	if _fused and is_instance_valid(_fused_sprite):
