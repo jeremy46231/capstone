@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyjqiyio46u8f"
-path="res://.godot/imported/whitetile.png-0837ee012934ba82602afef9b3a259f5.ctex"
+uid="uid://bon4dhg1ocp3c"
+path="res://.godot/imported/collisionTiles.png-95bed018d897d548831fbf57770af868.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main/assets/whitetile.png"
-dest_files=["res://.godot/imported/whitetile.png-0837ee012934ba82602afef9b3a259f5.ctex"]
+source_file="res://main/assets/collisionTiles.png"
+dest_files=["res://.godot/imported/collisionTiles.png-95bed018d897d548831fbf57770af868.ctex"]
 
 [params]
 
