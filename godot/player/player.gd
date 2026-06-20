@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -10,32 +11,53 @@ extends CharacterBody2D
 
 # movement vars
 # horizontal
-@export var speed: float = 300.0
-@export var acceleration: float = 2000.0
-@export var friction: float = 2400.0
-@export var air_acceleration: float = 1200.0
-@export var air_friction: float = 400.0
+const speed: float = 300.0
+const acceleration: float = 2000.0
+const friction: float = 2400.0
+const air_acceleration: float = 1200.0
+const air_friction: float = 400.0
 # jump
-@export var jump_velocity: float = -400.0
+const jump_velocity: float = -400.0
 # gravity
-@export var rise_gravity_scale: float = 1.0
-@export var fall_gravity_scale: float = 1.6
-@export var max_fall_speed: float = 1000.0
+const rise_gravity_scale: float = 1.0
+const fall_gravity_scale: float = 1.6
+const max_fall_speed: float = 1000.0
 # short tap -> short hop
 # if you let go when going up, kinda like stop going up as much
-@export_range(0.0, 1.0) var jump_cut_factor: float = 0.4
+const jump_cut_factor: float = 0.4
 # coyote time! :D (and other buffer time)
-@export var coyote_time: float = 0.1
-@export var jump_buffer_time: float = 0.1
+const coyote_time: float = 0.1
+const jump_buffer_time: float = 0.1
 # shrink toggle
 const SCALE_FACTOR = 0.5
+
+# player is 16x16
+const HALF := Vector2(8, 8)
 
 # timers
 var _coyote_timer: float = 0.0
 var _buffer_timer: float = 0.0
 
+# true while on top of the other player, turns off our vertical physics
+# until we jump or slide off the edge
+var _riding: bool = false
+
+# the other player
+var other: Player
+# where we were at the start of the current frame
+# (so we can move a player riding us)
+var _frame_start_pos: Vector2
+
+func _ready() -> void:
+	add_to_group("players")
+	_frame_start_pos = global_position
+
 func _physics_process(delta: float) -> void:
-	var on_floor := is_on_floor()
+	_frame_start_pos = global_position
+	if other == null:
+		_find_other()
+
+	var on_floor := is_on_floor() or _riding
 
 	# make timers go
 	_coyote_timer = coyote_time if on_floor else _coyote_timer - delta
@@ -55,6 +77,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_velocity
 		_buffer_timer = 0.0
 		_coyote_timer = 0.0
+		_set_riding(false)
 
 	# stop going up as much when we let go
 	if Input.is_action_just_released(jump_action) and velocity.y < 0.0:
@@ -81,3 +104,86 @@ func _physics_process(delta: float) -> void:
 
 	# magic godot function waow godot is so cool
 	move_and_slide()
+
+	if other != null:
+		# do all the work to do with the other player
+		_resolve_other()
+
+
+func _set_riding(value: bool) -> void:
+	if _riding == value:
+		return
+	_riding = value
+	# rider must run after carrier
+	process_physics_priority = 1 if value else 0
+
+
+func _find_other() -> void:
+	for p in get_tree().get_nodes_in_group("players"):
+		if p != self:
+			other = p
+			return
+
+
+# bounding box, global
+func _rect() -> Rect2:
+	return Rect2(global_position - HALF, HALF * 2.0)
+
+
+func _resolve_other() -> void:
+	# already riding: keep sticking until we slide off the side or the carrier
+	# rises above us (e.g. we got stopped by a ceiling)
+	if _riding:
+		var dx := absf(global_position.x - other.global_position.x)
+		var gap := other.global_position.y - global_position.y
+		if dx < 2.0 * HALF.x and gap > 0.0 and gap < 6.0 * HALF.y:
+		  # stick to them
+			_stick_to(other)
+		else:
+		  # we aren't close enough to stick anymore
+			_set_riding(false)
+		return
+
+	var a := _rect()
+	var b := other._rect()
+	if not a.intersects(b):
+		return
+
+	# how deep we overlap on each axis
+	var overlap_x := minf(a.end.x, b.end.x) - maxf(a.position.x, b.position.x)
+	var overlap_y := minf(a.end.y, b.end.y) - maxf(a.position.y, b.position.y)
+
+	if overlap_y <= overlap_x:
+		# mostly stacked, if I'm the upper one and not flying upward, start riding
+		if global_position.y < other.global_position.y and velocity.y >= 0.0:
+			_set_riding(true)
+			_stick_to(other)
+		# if I'm the bottom one, I do nothing special
+	else:
+		# mostly side-by-side, push apart
+		var dir := signf(a.get_center().x - b.get_center().x)
+		if dir == 0.0:
+			dir = 1.0
+		move_and_collide(Vector2(dir * overlap_x * 0.5, 0.0))
+
+
+# lock onto the carrier, match its height exactly and follow whatever
+# horizontal distance it moved this frame
+func _stick_to(carrier: Player) -> void:
+	var target_y := carrier.global_position.y - 2.0 * HALF.y
+	var dy := target_y - global_position.y
+	var hit := move_and_collide(Vector2(0.0, dy))
+
+	# carrier pushed us into a ceiling, shove it back down and zero velocity
+	if hit != null and dy < 0.0:
+		var push_down := (global_position.y + 2.0 * HALF.y) - carrier.global_position.y
+		if push_down > 0.0:
+			carrier.move_and_collide(Vector2(0.0, push_down))
+			if carrier.velocity.y < 0.0:
+				carrier.velocity.y = 0.0
+
+	var carrier_dx := carrier.global_position.x - carrier._frame_start_pos.x
+	if carrier_dx != 0.0:
+		move_and_collide(Vector2(carrier_dx, 0.0))
+	
+	velocity.y = carrier.velocity.y
