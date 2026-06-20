@@ -1,5 +1,5 @@
-extends CharacterBody2D
 class_name Player
+extends CharacterBody2D
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -8,6 +8,10 @@ class_name Player
 @export var left_action: StringName = "p1_left"
 @export var right_action: StringName = "p1_right"
 @export var smol_action: StringName = "p1_smol"
+@export var teleport_action: StringName = "p1_teleport"
+
+# the other player (wired up in the scene)
+@export var other_player: Player
 
 # movement vars
 # horizontal
@@ -42,20 +46,15 @@ var _buffer_timer: float = 0.0
 # until we jump or slide off the edge
 var _riding: bool = false
 
-# the other player
-var other: Player
 # where we were at the start of the current frame
 # (so we can move a player riding us)
 var _frame_start_pos: Vector2
 
 func _ready() -> void:
-	add_to_group("players")
 	_frame_start_pos = global_position
 
 func _physics_process(delta: float) -> void:
 	_frame_start_pos = global_position
-	if other == null:
-		_find_other()
 
 	var on_floor := is_on_floor() or _riding
 
@@ -102,10 +101,15 @@ func _physics_process(delta: float) -> void:
 		var fric := friction if on_floor else air_friction
 		velocity.x = move_toward(velocity.x, 0.0, fric * delta)
 
+	# teleport / "call" the other player to us
+	# TODO: do
+	if Input.is_action_just_pressed(teleport_action):
+		pass
+
 	# magic godot function waow godot is so cool
 	move_and_slide()
 
-	if other != null:
+	if is_instance_valid(other_player):
 		# do all the work to do with the other player
 		_resolve_other()
 
@@ -118,13 +122,6 @@ func _set_riding(value: bool) -> void:
 	process_physics_priority = 1 if value else 0
 
 
-func _find_other() -> void:
-	for p in get_tree().get_nodes_in_group("players"):
-		if p != self:
-			other = p
-			return
-
-
 # bounding box, global
 func _rect() -> Rect2:
 	return Rect2(global_position - HALF, HALF * 2.0)
@@ -134,18 +131,18 @@ func _resolve_other() -> void:
 	# already riding: keep sticking until we slide off the side or the carrier
 	# rises above us (e.g. we got stopped by a ceiling)
 	if _riding:
-		var dx := absf(global_position.x - other.global_position.x)
-		var gap := other.global_position.y - global_position.y
+		var dx := absf(global_position.x - other_player.global_position.x)
+		var gap := other_player.global_position.y - global_position.y
 		if dx < 2.0 * HALF.x and gap > 0.0 and gap < 6.0 * HALF.y:
-		  # stick to them
-			_stick_to(other)
+			# stick to them
+			_stick_to(other_player)
 		else:
-		  # we aren't close enough to stick anymore
+			# we aren't close enough to stick anymore
 			_set_riding(false)
 		return
 
 	var a := _rect()
-	var b := other._rect()
+	var b := other_player._rect()
 	if not a.intersects(b):
 		return
 
@@ -155,9 +152,9 @@ func _resolve_other() -> void:
 
 	if overlap_y <= overlap_x:
 		# mostly stacked, if I'm the upper one and not flying upward, start riding
-		if global_position.y < other.global_position.y and velocity.y >= 0.0:
+		if global_position.y < other_player.global_position.y and velocity.y >= 0.0:
 			_set_riding(true)
-			_stick_to(other)
+			_stick_to(other_player)
 		# if I'm the bottom one, I do nothing special
 	else:
 		# mostly side-by-side, push apart
@@ -185,5 +182,5 @@ func _stick_to(carrier: Player) -> void:
 	var carrier_dx := carrier.global_position.x - carrier._frame_start_pos.x
 	if carrier_dx != 0.0:
 		move_and_collide(Vector2(carrier_dx, 0.0))
-	
+
 	velocity.y = carrier.velocity.y
