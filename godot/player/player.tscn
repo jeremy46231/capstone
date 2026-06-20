@@ -15,7 +15,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_682wv"]
-size = Vector2(16, 16)
+size = Vector2(16, 15)
 
 [node name="Player" type="CharacterBody2D" unique_id=428086679]
 script = ExtResource("1_oul6g")
@@ -25,4 +25,5 @@ texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_lgort")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1122835623]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_682wv")
