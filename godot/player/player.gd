@@ -6,12 +6,15 @@ extends CharacterBody2D
 
 const title = preload("res://title/title.tscn")
 
+@export var player_id: int = 1
+
 # keybinds
 @export var jump_action: StringName = "p1_jump"
 @export var left_action: StringName = "p1_left"
 @export var right_action: StringName = "p1_right"
 @export var smol_action: StringName = "p1_smol"
 @export var call_action: StringName = "p1_call"
+
 
 # the other player (wired up in the scene)
 @export var other_player: Player
@@ -295,31 +298,32 @@ func _stick_to(carrier: Player) -> void:
 	velocity.y = carrier.velocity.y
 
 func _set_anim() -> void:
+	
+	var anim_name
 	if velocity.y == 0:
-		if velocity.x == 0:
-			anim.play("idle")
-		if velocity.x > 0:
-			anim.play("right")
-		if velocity.x < 0:
-			anim.play("left")
+		if abs(velocity.x) == 0:
+			anim_name = "idle"
+		if abs(velocity.x) > 0:
+			anim_name = "move"
 
 	# down
 	if velocity.y > 0:
-		if velocity.x == 0:
-			anim.play("down")
-		if velocity.x > 0:
-			anim.play("right_down")
-		if velocity.x < 0:
-			anim.play("left_down")
+		if abs(velocity.x) == 0:
+			anim_name = "down"
+		if abs(velocity.x) > 0:
+			anim_name = "move_down"
 
 	# up
 	if velocity.y < 0:
-		if velocity.x == 0:
-			anim.play("up")
-		if velocity.x > 0:
-			anim.play("right_up")
-		if velocity.x < 0:
-			anim.play("left_up")
+		if abs(velocity.x) == 0:
+			anim_name = "down"
+		if abs(velocity.x) > 0:
+			anim_name = "move_up"
+	
+	if player_id != 1:
+		anim_name += "2"
+	
+	anim.play(anim_name)
 
 	# the fused passenger mirrors our animation state
 	if _fused and is_instance_valid(_fused_sprite):
