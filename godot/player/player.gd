@@ -324,8 +324,7 @@ func _set_anim() -> void:
 func _on_death() -> void:
 	if !is_dead:
 		is_dead = true
-		get_tree().change_scene_to_file("res://main/main.tscn")
-		# get_tree().change_scene_to_file("res://title/title.tscn")
+		get_tree().change_scene_to_file("res://title/title.tscn")
 
 func check_collisions() -> void:
 	for i in get_slide_collision_count():
