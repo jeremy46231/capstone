@@ -4,6 +4,8 @@ extends CharacterBody2D
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 
+const title = preload("res://title/title.tscn")
+
 # keybinds
 @export var jump_action: StringName = "p1_jump"
 @export var left_action: StringName = "p1_left"
@@ -14,6 +16,7 @@ extends CharacterBody2D
 # the other player (wired up in the scene)
 @export var other_player: Player
 
+var is_dead = false
 var isSmol := false
 
 # smol shrinks the collision shape + sprite rather than scaling the body node:
@@ -128,6 +131,8 @@ func _physics_process(delta: float) -> void:
 
 	# magic godot function waow godot is so cool
 	move_and_slide()
+
+	check_collisions()
 
 	if is_instance_valid(other_player):
 		# do all the work to do with the other player
@@ -311,3 +316,24 @@ func _set_anim() -> void:
 		_fused_sprite.animation = anim.animation
 		_fused_sprite.flip_h = anim.flip_h
 		_fused_sprite.frame = anim.frame
+
+func _on_death() -> void:
+	if !is_dead:
+		is_dead = true
+		get_tree().change_scene_to_file("res://title/title.tscn")
+
+func check_collisions() -> void:
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider is TileMapLayer:
+			var tilemap = collider
+			var collision_position = collision.get_position()
+			var tile_pos = tilemap.local_to_map(tilemap.to_local(collision_position - collision.get_normal() * 2))
+			var tile = tilemap.get_cell_tile_data(tile_pos)
+
+			if tile:
+				var action_type = tile.get_custom_data("spike")
+
+				if action_type:
+					_on_death()
