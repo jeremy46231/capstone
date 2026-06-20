@@ -170,11 +170,22 @@ func _resolve_other() -> void:
 			_stick_to(other_player)
 		# if I'm the bottom one, I do nothing special
 	else:
-		# mostly side-by-side, push apart
+		# mostly side-by-side
 		var dir := signf(a.get_center().x - b.get_center().x)
 		if dir == 0.0:
 			dir = 1.0
-		move_and_collide(Vector2(dir * overlap_x * 0.5, 0.0))
+		var half := overlap_x * 0.5
+		# shove the other player out by up to half
+		var other_col := other_player.move_and_collide(Vector2(-dir * half, 0.0))
+		var other_moved := absf(other_col.get_travel().x) if other_col != null else half
+		# move ourselves out by whatever overlap remains (more if they hit a wall)
+		var my_request := overlap_x - other_moved
+		var my_col := move_and_collide(Vector2(dir * my_request, 0.0))
+		var my_moved := absf(my_col.get_travel().x) if my_col != null else my_request
+		# if we hit a wall too, push the leftover back onto the other player
+		var leftover := my_request - my_moved
+		if leftover > 0.0:
+			other_player.move_and_collide(Vector2(-dir * leftover, 0.0))
 
 
 # lock onto the carrier, match its height exactly and follow whatever
