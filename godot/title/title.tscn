@@ -51,12 +51,24 @@ scale = Vector2(0.73249996, 0.7325001)
 texture = ExtResource("3_8xu2e")
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1695925784]
-offset_top = 5.0
+offset_top = -5.0
 offset_right = 512.0
-offset_bottom = 53.0
+offset_bottom = 43.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
-text = "nexus game (wow)"
+text = "Capstone"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="TitleLabel" unique_id=198586280]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 26.0
+offset_right = 513.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "A puzzle platformer built at Hack Club's Horizons Nexus"
 horizontal_alignment = 1
 vertical_alignment = 1
 
