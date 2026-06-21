@@ -2,9 +2,14 @@ extends Node2D
 
 @onready var camera: Camera2D = $Camera2D
 @onready var _players: Array = [$Player, $Player2]
+@onready var win_zone: Area2D = $WinZone
 
 const FOCUS_FRACTION := 0.8
 const CAM_SMOOTH := 8.0
+
+const WIN_DWELL := 0.3
+var _win_timer: float = 0.0
+var _won: bool = false
 
 # captured at start
 var _default_zoom: float
@@ -46,3 +51,24 @@ func _physics_process(delta: float) -> void:
 	var t := 1.0 - exp(-CAM_SMOOTH * delta)
 	camera.global_position = camera.global_position.lerp(target_pos, t)
 	camera.zoom = camera.zoom.lerp(Vector2(target_zoom, target_zoom), t)
+
+	if not _won:
+		_check_win(alive, delta)
+
+
+# clear the level once every alive player is in the win zone together
+func _check_win(alive: Array, delta: float) -> void:
+	var in_zone := win_zone.get_overlapping_bodies().filter(func(b): return b is Player)
+	if not alive.is_empty() and in_zone.size() == alive.size():
+		_win_timer += delta
+		if _win_timer >= WIN_DWELL:
+			_level_complete()
+	else:
+		_win_timer = 0.0
+
+
+func _level_complete() -> void:
+	_won = true
+	print("Level complete!")
+	# TODO: load the next level instead of restarting
+	get_tree().reload_current_scene()

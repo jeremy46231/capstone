@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bf31bu5f18p28" path="res://player/player.tscn" id="2_pjrb6"]
 [ext_resource type="Texture2D" uid="uid://bon4dhg1ocp3c" path="res://main/assets/collisionTiles.png" id="3_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://n36354mflt3b" path="res://plate/plate.tscn" id="4_c651c"]
+[ext_resource type="PackedScene" uid="uid://dw04n8x2qke1l" path="res://winzone/winzone.tscn" id="5_winzn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xwkvk"]
 texture = ExtResource("3_xwkvk")
@@ -131,3 +132,6 @@ tile_set = SubResource("TileSet_mjj8b")
 
 [node name="Plate" parent="." unique_id=1512750844 instance=ExtResource("4_c651c")]
 position = Vector2(520, 200)
+
+[node name="WinZone" parent="." unique_id=1240630372 instance=ExtResource("5_winzn")]
+position = Vector2(1904, 184)

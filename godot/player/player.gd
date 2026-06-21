@@ -340,7 +340,7 @@ func _colour_variant(base, id := player_id) -> String:
 func _on_death() -> void:
 	if !is_dead:
 		is_dead = true
-		get_tree().change_scene_to_file("res://title/title.tscn")
+		get_tree().reload_current_scene()
 
 func check_collisions() -> void:
 	if global_position.y > death_y:
