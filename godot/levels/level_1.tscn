@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://cves4fjmqm6ol"]
+[gd_scene format=4 uid="uid://bnhrfafctmqjv"]
 
 [ext_resource type="Script" uid="uid://ro4nsj5qjut0" path="res://levels/level.gd" id="0_level"]
 [ext_resource type="Texture2D" uid="uid://bon4dhg1ocp3c" path="res://main/assets/collisionTiles.png" id="3_xwkvk"]
@@ -110,7 +110,6 @@ texture = ExtResource("3_xwkvk")
 6:1/0 = 0
 6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6, 6, 6, 6, 6, 8, -6, 8)
 6:5/0 = 0
-6:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, 4, 2, 4, 2, 8, -2, 8)
 
 [sub_resource type="TileSet" id="TileSet_mjj8b"]
 physics_layer_0/collision_layer = 1
