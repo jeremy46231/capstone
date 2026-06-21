@@ -58,6 +58,7 @@ jobs:
       - name: Deploy web to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
+          wranglerVersion: "4.103.0"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
