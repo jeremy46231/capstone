@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://cwhrunejujvoo"]
+[gd_scene format=3 uid="uid://cwhrunejujvoo"]
 
 [ext_resource type="Script" uid="uid://citxki4y4dqka" path="res://title/title.gd" id="1_yx5l7"]
 [ext_resource type="Texture2D" uid="uid://ddi1amvhlwqy4" path="res://main/assets/pyramidbg.png" id="2_0tjwc"]
@@ -17,17 +17,17 @@ events = [SubResource("InputEventKey_8xu2e")]
 [node name="Title" type="Node2D" unique_id=1310818328]
 script = ExtResource("1_yx5l7")
 
-[node name="Background" type="Node2D" parent="."]
+[node name="Background" type="Node2D" parent="." unique_id=437233675]
 
-[node name="SkyBand" type="Polygon2D" parent="Background"]
+[node name="SkyBand" type="Polygon2D" parent="Background" unique_id=269369409]
 color = Color(0.1176, 0.2588, 0.3765, 1)
 polygon = PackedVector2Array(-100000, -100000, 100000, -100000, 100000, 240.12, -100000, 240.12)
 
-[node name="SandDark" type="Polygon2D" parent="Background"]
+[node name="SandDark" type="Polygon2D" parent="Background" unique_id=312177292]
 color = Color(0.6431, 0.6, 0.4627, 1)
 polygon = PackedVector2Array(-100000, 240.12, 100000, 240.12, 100000, 260.63, -100000, 260.63)
 
-[node name="SandLight" type="Polygon2D" parent="Background"]
+[node name="SandLight" type="Polygon2D" parent="Background" unique_id=2067252505]
 color = Color(0.7961, 0.7412, 0.5765, 1)
 polygon = PackedVector2Array(-100000, 260.63, 100000, 260.63, 100000, 100000, -100000, 100000)
 
@@ -41,49 +41,64 @@ position = Vector2(256.625, 140.50002)
 scale = Vector2(0.73249996, 0.7325001)
 texture = ExtResource("3_8xu2e")
 
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="TitleLabel" type="Label" parent="UI" unique_id=1695925784]
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -256.0
-offset_top = 5.0
-offset_right = 256.0
-offset_bottom = 53.0
+[node name="TitleLabel" type="Label" parent="." unique_id=1695925784]
+offset_top = -5.0
+offset_right = 512.0
+offset_bottom = 43.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
 text = "Capstone"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayTextureButton" type="TextureButton" parent="UI" unique_id=1870707893]
+[node name="TitleLabel" type="Label" parent="TitleLabel" unique_id=198586280]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 26.0
+offset_right = 513.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "A puzzle platformer built at Hack Club's Horizons Nexus"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=117682934]
+
+[node name="PlayTextureButton" type="TextureButton" parent="CanvasLayer" unique_id=1870707893]
 texture_filter = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -63.0
-offset_top = -28.0
+offset_top = -47.0
 offset_right = -31.0
-offset_bottom = -12.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(4, 4)
 shortcut = SubResource("Shortcut_uqv1u")
 shortcut_in_tooltip = false
 texture_normal = ExtResource("2_nx56k")
 texture_hover = ExtResource("3_6s8lb")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI" unique_id=1590249080]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer" unique_id=1590249080]
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -63.0
-offset_top = -30.0
+offset_top = -49.0
 offset_right = 65.0
-offset_bottom = 34.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 text = "Play"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="UI/PlayTextureButton" to="." method="_on_play_texture_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PlayTextureButton" to="." method="_on_play_texture_button_pressed"]
