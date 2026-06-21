@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nexus-game-wow",
+  "compatibility_date": "2026-06-21",
+  "main": "worker.js",
+  "assets": {
+    "directory": "./build/build-1",
+    "binding": "ASSETS",
+    "run_worker_first": ["/index.wasm"]
+  }
+}

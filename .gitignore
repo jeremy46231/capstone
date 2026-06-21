@@ -18,4 +18,9 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
-/build
+
+# Build output (produced by CI)
+/build/
+/godot/dist/
+
+.wrangler/
