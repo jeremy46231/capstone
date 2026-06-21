@@ -361,4 +361,3 @@ func check_collisions() -> void:
 
 				if action_type:
 					_on_death()
-
