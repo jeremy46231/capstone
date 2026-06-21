@@ -139,6 +139,9 @@ tile_set = SubResource("TileSet_mjj8b")
 [node name="PressurePlate" parent="." unique_id=1567437349 instance=ExtResource("2_c651c")]
 position = Vector2(275, 157)
 
+[node name="WinZone" parent="." unique_id=1240630372 instance=ExtResource("5_winzn")]
+position = Vector2(464, 216)
+
 [node name="Player2" parent="." unique_id=428086680 node_paths=PackedStringArray("other_player") instance=ExtResource("2_pjrb6")]
 position = Vector2(30, 193)
 player_id = 2
@@ -148,9 +151,6 @@ right_action = &"p2_right"
 smol_action = &"p2_smol"
 call_action = &"p2_call"
 other_player = NodePath("../Player")
-
-[node name="WinZone" parent="." unique_id=1240630372 instance=ExtResource("5_winzn")]
-position = Vector2(464, 216)
 
 [node name="Player" parent="." unique_id=428086679 node_paths=PackedStringArray("other_player") instance=ExtResource("2_pjrb6")]
 position = Vector2(-1, 192)

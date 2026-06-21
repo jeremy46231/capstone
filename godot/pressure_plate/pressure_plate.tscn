@@ -34,6 +34,7 @@ animations = [{
 }]
 
 [node name="PressurePlate" type="Area2D" unique_id=1567437349]
+collision_mask = 2
 script = ExtResource("1_uiy6i")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=851759678]
