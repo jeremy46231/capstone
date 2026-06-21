@@ -131,9 +131,9 @@ sources/0 = SubResource("TileSetAtlasSource_xwkvk")
 script = ExtResource("1_t0qhu")
 
 [node name="CameraArea" type="ReferenceRect" parent="." unique_id=1839924967]
-offset_left = -32.0
-offset_top = -192.0
-offset_right = 688.0
+offset_left = -176.0
+offset_top = -336.0
+offset_right = 1312.0
 offset_bottom = 288.0
 mouse_filter = 2
 border_color = Color(1, 0.85, 0, 1)
