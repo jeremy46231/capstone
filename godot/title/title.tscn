@@ -52,7 +52,7 @@ offset_right = 256.0
 offset_bottom = 53.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
-text = "nexus game (wow)"
+text = "Capstone"
 horizontal_alignment = 1
 vertical_alignment = 1
 

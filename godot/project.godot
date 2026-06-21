@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="nexus game (wow)"
+config/name="Capstone"
 run/main_scene="uid://cwhrunejujvoo"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
