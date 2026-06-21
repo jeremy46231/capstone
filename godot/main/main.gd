@@ -4,6 +4,8 @@ extends Node2D
 @onready var _players: Array = [$Player, $Player2]
 @onready var _level_holder: Node2D = $CurrentLevel
 
+@export var player_scene: PackedScene
+
 # ordered list of levels
 const LEVELS := [
 	"res://levels/level_1.tscn",
@@ -28,7 +30,6 @@ var _default_zoom: float
 func _ready() -> void:
 	_default_zoom = camera.zoom.x
 	_load_level(Game.level)
-
 
 func _load_level(index: int) -> void:
 	# clear any previous level

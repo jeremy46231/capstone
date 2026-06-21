@@ -89,6 +89,10 @@ var _fused_player_id: int = 1
 # (so we can move a player riding us)
 var _frame_start_pos: Vector2
 
+@rpc("unreliable")
+func update_position(pos: Vector2):
+	global_position = pos
+
 func _ready() -> void:
 	_frame_start_pos = global_position
 	# private copy of the shape so resizing for smol doesn't mutate the other
@@ -159,6 +163,9 @@ func _physics_process(delta: float) -> void:
 	if is_instance_valid(other_player):
 		# do all the work to do with the other player
 		_resolve_other()
+	
+	if is_multiplayer_authority():
+		rpc("update_position", global_position)
 
 
 func _set_riding(value: bool) -> void:
@@ -375,3 +382,4 @@ func check_collisions() -> void:
 
 				if action_type:
 					_on_death()
+					
