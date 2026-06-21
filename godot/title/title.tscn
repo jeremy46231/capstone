@@ -48,6 +48,7 @@ offset_right = 144.0
 offset_bottom = 132.0
 scale = Vector2(4, 4)
 shortcut = SubResource("Shortcut_uqv1u")
+shortcut_in_tooltip = false
 texture_normal = ExtResource("2_nx56k")
 texture_hover = ExtResource("3_6s8lb")
 
@@ -59,6 +60,7 @@ offset_right = 304.0
 offset_bottom = 132.0
 scale = Vector2(4, 4)
 shortcut = SubResource("Shortcut_0tjwc")
+shortcut_in_tooltip = false
 texture_normal = ExtResource("4_8xu2e")
 texture_hover = ExtResource("5_0tjwc")
 
