@@ -34,10 +34,10 @@ jobs:
       - name: Package downloads
         run: |
           mkdir -p dist
-          (cd build/windows && zip -r ../../dist/nexus-game-wow-windows.zip .)
-          (cd build/linux && zip -r ../../dist/nexus-game-wow-linux.zip .)
-          cp build/macos/nexus-game-wow.zip dist/nexus-game-wow-macos.zip
-          (cd build/web && zip -r ../../dist/nexus-game-wow-web.zip .)
+          (cd build/windows && zip -r ../../dist/capstone-windows.zip .)
+          (cd build/linux && zip -r ../../dist/capstone-linux.zip .)
+          cp build/macos/capstone.zip dist/capstone-macos.zip
+          (cd build/web && zip -r ../../dist/capstone-web.zip .)
 
       - name: Update nightly release
         env:
