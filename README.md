@@ -1,4 +1,4 @@
-# Capstone
+# [Capstone](https://capstone.jer.app)
 
 Built in SF at [Hack Club](https://hackclub.com)'s [Horizons Nexus](https://nexus.hackclub.com) hackathon
 
