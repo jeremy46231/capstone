@@ -1,0 +1,63 @@
+name: build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: true
+
+      - name: Export all platforms
+        working-directory: godot
+        run: |
+          for d in build-1 windows linux macos; do mkdir -p "../build/$d"; done
+          godot --headless --import
+          godot --headless --export-release "build-1"
+          godot --headless --export-release "Windows"
+          godot --headless --export-release "Linux"
+          godot --headless --export-release "macOS"
+
+      - name: Package downloads
+        run: |
+          mkdir -p dist
+          (cd build/windows && zip -r ../../dist/nexus-game-wow-windows.zip .)
+          (cd build/linux && zip -r ../../dist/nexus-game-wow-linux.zip .)
+          cp build/macos/nexus-game-wow.zip dist/nexus-game-wow-macos.zip
+          (cd build/build-1 && zip -r ../../dist/nexus-game-wow-web.zip .)
+
+      - name: Update nightly release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete nightly --yes --cleanup-tag || true
+          gh release create nightly dist/* \
+            --title "Nightly build" \
+            --notes "Automated build from ${{ github.sha }}" \
+            --prerelease
+
+      # index.wasm is ~36 MiB raw, over the Workers 25 MiB per-file asset limit.
+      # Store it gzipped (~10 MiB); worker.js serves it with Content-Encoding: gzip.
+      # Done after packaging so the downloadable web zip keeps the raw wasm.
+      - name: Compress wasm
+        run: gzip -9 -f build/build-1/index.wasm && mv build/build-1/index.wasm.gz build/build-1/index.wasm
+
+      - name: Deploy web to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
