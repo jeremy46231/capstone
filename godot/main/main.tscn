@@ -110,6 +110,7 @@ texture = ExtResource("3_xwkvk")
 6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6, 6, 6, 6, 6, 8, -6, 8)
 6:1/0 = 0
 6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6, 6, 6, 6, 6, 8, -6, 8)
+6:5/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_mjj8b"]
 physics_layer_0/collision_layer = 1
