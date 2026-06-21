@@ -4,7 +4,6 @@ extends CharacterBody2D
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 
-const title = preload("res://title/title.tscn")
 const desaturate_shader = preload("res://player/desaturate.gdshader")
 
 # how the fused-on-top passenger is tinted
@@ -22,12 +21,12 @@ const FUSED_LIGHTNESS := 0.25
 @export var smol_action: StringName = "p1_smol"
 @export var call_action: StringName = "p1_call"
 
-var smol_avail = true
-var call_avail = true
+var smol_avail := true
+var call_avail := true
 # the other player (wired up in the scene)
 @export var other_player: Player
 
-var is_dead = false
+var is_dead := false
 var isSmol := false
 
 # smol shrinks the collision shape + sprite rather than scaling the body node:
@@ -127,7 +126,7 @@ func _physics_process(delta: float) -> void:
 
 	# shrink (permanent -- no growing back)
 	if Input.is_action_just_pressed(smol_action) and smol_avail:
-			_set_smol(true)
+		_set_smol(true)
 
 	# horizontal movement
 	var direction := Input.get_axis(left_action, right_action)
